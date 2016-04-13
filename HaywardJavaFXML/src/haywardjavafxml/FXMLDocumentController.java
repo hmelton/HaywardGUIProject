@@ -5,6 +5,7 @@
  */
 package haywardjavafxml;
 
+
 import java.net.*;
 import java.util.*;
 import com.google.gson.*;
@@ -13,6 +14,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 
 
@@ -24,6 +26,9 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private Label label;
+    
+    @FXML
+    private XYChart<String,Number> chart;
     
     @FXML
     private void handleButtonAction(ActionEvent event) {
@@ -58,14 +63,13 @@ public class FXMLDocumentController implements Initializable {
         scan.close();
         
         
-        Map<String, Integer> immunizationPercent = new TreeMap<String, Integer>();
         Gson gson = new Gson();
         DataSet immunizations = gson.fromJson(str, DataSet.class);
         
         XYChart.Series<String, Number> immunizedSeries = new XYChart.Series<>();
         immunizedSeries.setName("Percent Immunized");
-        for(){
-            
+        for(DataPoint data : immunizations.getDataPoints()){
+            immunizedSeries.getData().add(new XYChart.Data(data.getCountry(), data.getValue()));
         }
         chart.getData().add(immunizedSeries);
         

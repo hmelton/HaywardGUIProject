@@ -16,4 +16,11 @@ public class DataPoint {
     public String toString(){
         return dim.getCountry() + ": " + Value + "% immunized";
     }
+    public int getValue(){
+        return Value;
+    }
+    public String getCountry(){
+        return dim.getCountry();
+    
+    }
 }

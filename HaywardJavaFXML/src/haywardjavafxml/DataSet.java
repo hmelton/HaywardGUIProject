@@ -21,4 +21,8 @@ public class DataSet {
         }
         return outputStr;
     }
+    public DataPoint[] getDataPoints(){
+        return fact;
+    }
+    
 }
