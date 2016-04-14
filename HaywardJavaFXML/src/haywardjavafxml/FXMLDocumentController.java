@@ -6,16 +6,13 @@
 package haywardjavafxml;
 
 
-import java.net.*;
 import java.util.*;
 import com.google.gson.*;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.chart.XYChart;
-import javafx.scene.control.Label;
+import javafx.scene.chart.BarChart;
 
 
 /**
@@ -24,17 +21,9 @@ import javafx.scene.control.Label;
  */
 public class FXMLDocumentController implements Initializable {
     
-    @FXML
-    private Label label;
     
     @FXML
-    private XYChart<String,Number> chart;
-    
-    @FXML
-    private void handleButtonAction(ActionEvent event) {
-        System.out.println("You clicked me!");
-        label.setText("Hello World!");
-    }
+    private BarChart chart;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -63,13 +52,15 @@ public class FXMLDocumentController implements Initializable {
         scan.close();
         
         
-        Gson gson = new Gson();
-        DataSet immunizations = gson.fromJson(str, DataSet.class);
+        Gson myGSON = new Gson();
+        DataSet immunizations = myGSON.fromJson(str, DataSet.class);
         
-        XYChart.Series<String, Number> immunizedSeries = new XYChart.Series<>();
-        immunizedSeries.setName("Percent Immunized");
+        BarChart.Series immunizedSeries = new BarChart.Series();
+        
         for(DataPoint data : immunizations.getDataPoints()){
-            immunizedSeries.getData().add(new XYChart.Data(data.getCountry(), data.getValue()));
+            if(data.getCountry()!=null){
+                 immunizedSeries.getData().add(new BarChart.Data(data.getCountry(), data.getValue()));
+            }
         }
         chart.getData().add(immunizedSeries);
         
