@@ -8,11 +8,13 @@ package haywardjavafxml;
 
 import java.util.*;
 import com.google.gson.*;
+import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
+import javafx.scene.control.Slider;
 
 
 /**
@@ -24,6 +26,32 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private BarChart chart;
+    
+    @
+    FXML
+    private Slider minSlider;
+    
+    @
+    FXML
+    private Slider maxSlider;
+    
+    public DataSet dataSet;
+    
+    @
+    FXML
+    private void handleChangeSlider(){
+        chart.getData().clear();
+        BarChart.Series immunizedSeries = new BarChart.Series();
+        
+        for(DataPoint data : dataSet.getDataPoints()){
+            if((data.getValue() >= minSlider.getValue()) && (data.getValue() <= maxSlider.getValue())){
+                if(data.getCountry()!=null){
+                     immunizedSeries.getData().add(new BarChart.Data(data.getCountry(), data.getValue()));
+                }
+            }
+        }
+        chart.getData().add(immunizedSeries);
+    }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -51,19 +79,18 @@ public class FXMLDocumentController implements Initializable {
         }
         scan.close();
         
-        
         Gson myGSON = new Gson();
         DataSet immunizations = myGSON.fromJson(str, DataSet.class);
-        
+        dataSet  = immunizations;
+        chart.getData().clear();
         BarChart.Series immunizedSeries = new BarChart.Series();
         
-        for(DataPoint data : immunizations.getDataPoints()){
+        for(DataPoint data : dataSet.getDataPoints()){
             if(data.getCountry()!=null){
-                 immunizedSeries.getData().add(new BarChart.Data(data.getCountry(), data.getValue()));
-            }
+                     immunizedSeries.getData().add(new BarChart.Data(data.getCountry(), data.getValue()));
+            } 
         }
         chart.getData().add(immunizedSeries);
-        
     }    
     
 }
