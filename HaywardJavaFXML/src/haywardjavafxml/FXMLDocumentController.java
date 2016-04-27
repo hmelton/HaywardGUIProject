@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.control.Slider;
+import javafx.scene.media.AudioClip;
 
 
 /**
@@ -51,8 +52,11 @@ public class FXMLDocumentController implements Initializable {
             }
         }
         chart.getData().add(immunizedSeries);
+        AudioClip sound = new AudioClip(getClass().getResource("CanonInD.mp3").toString());
+        sound.play();
     }
     
+     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         String s = "http://apps.who.int/gho/athena/data/GHO/WHS4_544.json?profile=simple&filter=YEAR:1980";
@@ -91,6 +95,12 @@ public class FXMLDocumentController implements Initializable {
             } 
         }
         chart.getData().add(immunizedSeries);
+        
     }    
+    @Override
+    public final void stop(){
+        Singleton.init();
+    }
+    
     
 }
